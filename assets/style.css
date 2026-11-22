@@ -1,0 +1,334 @@
+/* ------------------------------------------------------------------ */
+/* Theme tokens — change these to restyle the whole site               */
+/* ------------------------------------------------------------------ */
+:root {
+  --bg: #fafafa;
+  --fg: #171717;
+  --muted: #6b6b6b;
+  --border: #e5e5e5;
+  --surface: #ffffff;
+  --max-width: 720px;
+  --radius: 16px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0a0a0a;
+    --fg: #ededed;
+    --muted: #9a9a9a;
+    --border: #262626;
+    --surface: #111111;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+
+section, header, footer { max-width: var(--max-width); margin: 0 auto; padding-left: 24px; padding-right: 24px; }
+
+/* ------------------------------------------------------------------ */
+/* Nav                                                                  */
+/* ------------------------------------------------------------------ */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-brand {
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.nav-links a { transition: color 0.15s ease; }
+.nav-links a:hover { color: var(--fg); }
+
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.nav-toggle span {
+  width: 20px;
+  height: 2px;
+  background: var(--fg);
+  border-radius: 2px;
+}
+
+@media (max-width: 620px) {
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    gap: 14px;
+    display: none;
+  }
+  .nav-links.open { display: flex; }
+  .nav-toggle { display: flex; }
+}
+
+/* ------------------------------------------------------------------ */
+/* Hero                                                                 */
+/* ------------------------------------------------------------------ */
+.hero {
+  padding-top: 88px;
+  padding-bottom: 96px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.hero-eyebrow { margin: 0; font-size: 14px; color: var(--muted); }
+
+.hero-title {
+  margin: 0;
+  font-size: clamp(36px, 6vw, 48px);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.hero-role {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.hero-tagline {
+  margin: 0;
+  max-width: 520px;
+  font-size: 16px;
+  color: var(--muted);
+}
+
+.hero-cta { display: flex; gap: 12px; flex-wrap: wrap; padding-top: 8px; }
+
+.hero-scroll {
+  margin-top: 32px;
+  font-size: 14px;
+  color: var(--muted);
+  transition: color 0.15s ease;
+}
+.hero-scroll:hover { color: var(--fg); }
+
+/* ------------------------------------------------------------------ */
+/* Buttons                                                              */
+/* ------------------------------------------------------------------ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: opacity 0.15s ease, background 0.15s ease;
+}
+
+.btn-primary { background: var(--fg); color: var(--bg); }
+.btn-primary:hover { opacity: 0.88; }
+
+.btn-ghost { border: 1px solid var(--border); }
+.btn-ghost:hover { background: color-mix(in srgb, var(--fg) 5%, transparent); }
+
+/* ------------------------------------------------------------------ */
+/* Sections                                                             */
+/* ------------------------------------------------------------------ */
+.section { padding-top: 56px; padding-bottom: 56px; }
+
+.section-label {
+  margin: 0 0 20px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.section-text {
+  margin: 0;
+  max-width: 560px;
+  color: color-mix(in srgb, var(--fg) 90%, var(--muted));
+}
+
+/* ------------------------------------------------------------------ */
+/* Tags                                                                 */
+/* ------------------------------------------------------------------ */
+.tag-list { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.tag {
+  font-size: 13px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: color-mix(in srgb, var(--fg) 90%, var(--muted));
+}
+
+.tag-list.small { gap: 6px; margin-top: 14px; }
+.tag-list.small .tag {
+  border: none;
+  background: color-mix(in srgb, var(--fg) 6%, transparent);
+  font-size: 12px;
+  padding: 3px 10px;
+  color: var(--muted);
+}
+
+/* ------------------------------------------------------------------ */
+/* Projects                                                             */
+/* ------------------------------------------------------------------ */
+.project-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 620px) {
+  .project-grid { grid-template-columns: 1fr; }
+}
+
+.project-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.project-card:hover {
+  background: color-mix(in srgb, var(--fg) 3%, var(--surface));
+  transform: translateY(-2px);
+}
+
+.project-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.project-head h4 { margin: 0; font-size: 16px; font-weight: 600; }
+
+.project-links { display: flex; gap: 10px; flex-shrink: 0; }
+.project-links a {
+  font-size: 15px;
+  color: var(--muted);
+  transition: color 0.15s ease;
+}
+.project-links a:hover { color: var(--fg); }
+
+.project-card p {
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* ------------------------------------------------------------------ */
+/* Timeline                                                             */
+/* ------------------------------------------------------------------ */
+.timeline {
+  border-top: 1px solid var(--border);
+}
+
+.timeline-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+@media (max-width: 500px) {
+  .timeline-item { flex-direction: column; gap: 4px; }
+}
+
+.timeline-role { margin: 0; font-size: 14px; font-weight: 600; }
+.timeline-org { margin: 2px 0 0; font-size: 14px; color: var(--muted); }
+.timeline-desc { margin: 4px 0 0; font-size: 14px; color: color-mix(in srgb, var(--fg) 85%, var(--muted)); }
+.timeline-period { margin: 0; font-size: 14px; color: var(--muted); white-space: nowrap; }
+
+/* ------------------------------------------------------------------ */
+/* Contact                                                              */
+/* ------------------------------------------------------------------ */
+.contact-section { padding-bottom: 88px; }
+.contact-section .btn { margin-top: 20px; }
+
+.social-list {
+  display: flex;
+  gap: 20px;
+  margin-top: 28px;
+  font-size: 14px;
+  color: var(--muted);
+}
+.social-list a:hover { color: var(--fg); }
+
+/* ------------------------------------------------------------------ */
+/* Footer                                                               */
+/* ------------------------------------------------------------------ */
+.footer {
+  border-top: 1px solid var(--border);
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+.footer p { margin: 0; font-size: 13px; color: var(--muted); }
+
+/* ------------------------------------------------------------------ */
+/* Scroll reveal                                                       */
+/* ------------------------------------------------------------------ */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
