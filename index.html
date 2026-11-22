@@ -3,169 +3,801 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Your Name | Software Engineer</title>
-<meta name="description" content="Portfolio of Your Name — projects, skills and contact.">
-<link rel="stylesheet" href="assets/style.css">
+<title>Your Name — Robotics &amp; AI Engineering</title>
+<meta name="description" content="Robotics and AI engineering student. Autonomous navigation, ROS 2, perception. Open to internships and thesis projects.">
+<meta name="theme-color" content="#05070c">
 <link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#05070c;
+    --panel:#0a0f17;
+    --panel-2:#0e141e;
+    --rule:#1b2432;
+    --steel:#8696ab;
+    --steel-dim:#5d6a7c;
+    --paper:#e8eef6;
+    --signal:#39d0d8;
+    --status:#ffb347;
+    --measure:68ch;
+  }
+
+  *{box-sizing:border-box}
+
+  html{-webkit-text-size-adjust:100%}
+
+  body{
+    margin:0;
+    background:var(--void);
+    color:var(--paper);
+    font-family:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:inherit;text-decoration:none}
+
+  :focus-visible{
+    outline:2px solid var(--signal);
+    outline-offset:3px;
+  }
+
+  .wrap{
+    width:100%;
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  /* ---------------- nav ---------------- */
+  .topbar{
+    position:sticky;top:0;z-index:60;
+    background:rgba(5,7,12,.82);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--rule);
+  }
+  .topbar .wrap{
+    display:flex;align-items:center;justify-content:space-between;
+    height:58px;
+  }
+  .ident{
+    font-weight:600;letter-spacing:-.01em;font-size:15px;
+  }
+  .ident span{color:var(--steel-dim);font-weight:400}
+  .topnav{display:flex;gap:26px;font-size:14px;color:var(--steel)}
+  .topnav a{padding:4px 0;border-bottom:1px solid transparent;transition:color .18s,border-color .18s}
+  .topnav a:hover{color:var(--paper);border-color:var(--signal)}
+  @media(max-width:720px){.topnav{display:none}}
+
+  /* ---------------- hero / scan ---------------- */
+  .scanstage{
+    position:relative;
+    height:min(78vh,660px);
+    min-height:460px;
+    border-bottom:1px solid var(--rule);
+    overflow:hidden;
+    cursor:crosshair;
+    background:
+      radial-gradient(120% 90% at 72% 50%, rgba(57,208,216,.07), transparent 60%),
+      var(--void);
+  }
+  #scan{position:absolute;inset:0;width:100%;height:100%;display:block}
+
+  /* keeps the hero text legible wherever the scan happens to be drawing */
+  .scrim{
+    position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(90deg,
+      var(--void) 0%,
+      rgba(5,7,12,.94) 32%,
+      rgba(5,7,12,.45) 58%,
+      rgba(5,7,12,0) 82%);
+  }
+
+  .scanstage .wrap{
+    position:relative;height:100%;
+    display:flex;flex-direction:column;justify-content:center;
+    pointer-events:none;
+  }
+
+  .herotext{max-width:38ch}
+  h1{
+    margin:0;
+    font-size:clamp(42px,7.4vw,86px);
+    line-height:.94;
+    font-weight:700;
+    letter-spacing:-.035em;
+    max-width:11ch;
+  }
+  .role{
+    margin:18px 0 0;
+    font-size:clamp(16px,1.9vw,21px);
+    font-weight:500;
+    color:var(--signal);
+    letter-spacing:-.01em;
+    max-width:24ch;
+  }
+  .blurb{
+    margin:16px 0 0;
+    max-width:40ch;
+    color:var(--steel);
+    font-size:16px;
+  }
+  .actions{
+    margin-top:28px;display:flex;gap:12px;flex-wrap:wrap;
+    pointer-events:auto;
+  }
+  .caption{
+    margin:34px 0 0;max-width:40ch;
+    font-size:13.5px;line-height:1.6;
+    color:var(--steel-dim);
+    padding-left:13px;
+    border-left:1px solid var(--rule);
+  }
+  .btn{
+    display:inline-flex;align-items:center;
+    height:42px;padding:0 22px;
+    border-radius:3px;
+    font-size:14.5px;font-weight:600;
+    border:1px solid transparent;
+    transition:background .18s,border-color .18s,color .18s;
+  }
+  .btn-key{background:var(--signal);color:#04161a}
+  .btn-key:hover{background:#5ee0e7}
+  .btn-line{border-color:var(--rule);color:var(--paper)}
+  .btn-line:hover{border-color:var(--steel);background:var(--panel)}
+
+  /* live readout */
+  .readout{
+    position:absolute;right:28px;bottom:26px;
+    font-family:'IBM Plex Mono',ui-monospace,monospace;
+    font-size:12px;
+    color:var(--steel-dim);
+    display:grid;gap:7px;
+    text-align:left;
+    pointer-events:none;
+    background:rgba(5,7,12,.84);
+    border:1px solid var(--rule);
+    border-radius:3px;
+    padding:14px 17px;
+    backdrop-filter:blur(3px);
+  }
+  .readout b{color:var(--paper);font-weight:500}
+  .key{display:flex;align-items:center;gap:9px}
+  .key i{
+    width:7px;height:7px;border-radius:50%;
+    display:block;flex:none;
+  }
+  .k-sensor{background:var(--status)}
+  .k-hit{background:var(--signal)}
+  .readout .dist{padding-left:16px}
+  .readout .hint{
+    margin-top:7px;padding-top:9px;
+    border-top:1px solid var(--rule);
+    color:#44505f;
+  }
+  @media(max-width:720px){.readout{display:none}}
+
+  @media(max-width:860px){
+    #scan{opacity:.32}
+    .scrim{
+      background:linear-gradient(90deg,
+        var(--void) 0%, rgba(5,7,12,.9) 52%, rgba(5,7,12,.5) 100%);
+    }
+  }
+
+  /* ---------------- sections ---------------- */
+  section{border-bottom:1px solid var(--rule)}
+  .pad{padding:74px 0}
+  h2{
+    margin:0 0 34px;
+    font-size:clamp(23px,3vw,30px);
+    font-weight:600;
+    letter-spacing:-.025em;
+  }
+  .lede{
+    margin:0;max-width:var(--measure);
+    color:var(--steel);font-size:17px;
+  }
+
+  /* subsystems */
+  .sub{
+    display:grid;
+    grid-template-columns:200px 1fr;
+    gap:20px 34px;
+    padding:20px 0;
+    border-top:1px solid var(--rule);
+    align-items:start;
+  }
+  .sub:last-child{border-bottom:1px solid var(--rule)}
+  .sub h3{
+    margin:0;font-size:16px;font-weight:600;letter-spacing:-.01em;
+  }
+  .sub p{margin:5px 0 0;font-size:14px;color:var(--steel-dim)}
+  .chips{display:flex;flex-wrap:wrap;gap:7px}
+  .chip{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+    padding:5px 11px;
+    border:1px solid var(--rule);
+    border-radius:2px;
+    color:var(--steel);
+    background:var(--panel);
+  }
+  @media(max-width:720px){.sub{grid-template-columns:1fr;gap:12px}}
+
+  /* builds */
+  .builds{display:grid;gap:16px;grid-template-columns:repeat(3,1fr)}
+  .build{
+    grid-column:span 1;
+    background:var(--panel);
+    border:1px solid var(--rule);
+    border-radius:4px;
+    padding:24px;
+    display:flex;flex-direction:column;
+    transition:border-color .2s,background .2s;
+  }
+  .build:hover{border-color:#2c3a4d;background:var(--panel-2)}
+  .build.feature{grid-column:span 3;display:grid;grid-template-columns:1.05fr .95fr;gap:34px;align-items:center}
+  .build h3{margin:0;font-size:19px;font-weight:600;letter-spacing:-.02em}
+  .build.feature h3{font-size:27px}
+  .build p{margin:11px 0 0;font-size:14.5px;color:var(--steel);line-height:1.6}
+  .build .chips{margin-top:18px}
+  .buildmeta{
+    margin-top:18px;padding-top:16px;border-top:1px solid var(--rule);
+    display:flex;gap:18px;flex-wrap:wrap;
+    font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--steel-dim);
+  }
+  .buildmeta i{font-style:normal;color:var(--steel)}
+  .viewport{
+    aspect-ratio:16/10;
+    border:1px solid var(--rule);
+    border-radius:3px;
+    background:
+      linear-gradient(rgba(57,208,216,.045),rgba(57,208,216,.045)),
+      repeating-linear-gradient(0deg,transparent 0 23px,rgba(134,150,171,.08) 23px 24px),
+      repeating-linear-gradient(90deg,transparent 0 23px,rgba(134,150,171,.08) 23px 24px),
+      var(--void);
+    display:grid;place-items:center;
+    font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--steel-dim);
+  }
+  .links{margin-top:18px;display:flex;gap:16px;font-size:14px}
+  .links a{color:var(--signal);border-bottom:1px solid transparent;transition:border-color .18s}
+  .links a:hover{border-color:var(--signal)}
+  @media(max-width:980px){
+    .builds{grid-template-columns:1fr}
+    .build.feature{grid-column:span 1;grid-template-columns:1fr;gap:22px}
+  }
+
+  /* log */
+  .log{border-top:1px solid var(--rule)}
+  .entry{
+    display:grid;grid-template-columns:150px 1fr;
+    gap:22px;padding:22px 0;border-bottom:1px solid var(--rule);
+  }
+  .entry time{
+    font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--steel-dim);
+  }
+  .entry h3{margin:0;font-size:16.5px;font-weight:600}
+  .entry .org{margin:3px 0 0;font-size:14.5px;color:var(--signal)}
+  .entry p{margin:9px 0 0;font-size:14.5px;color:var(--steel);max-width:var(--measure)}
+  @media(max-width:720px){.entry{grid-template-columns:1fr;gap:8px}}
+
+  /* contact */
+  .contact{padding:84px 0 92px}
+  .contact h2{margin-bottom:18px}
+  .mail{
+    display:inline-block;margin-top:26px;
+    font-size:clamp(22px,4vw,40px);
+    font-weight:600;letter-spacing:-.03em;
+    color:var(--signal);
+    border-bottom:2px solid rgba(57,208,216,.3);
+    transition:border-color .2s;
+  }
+  .mail:hover{border-color:var(--signal)}
+  .elsewhere{margin-top:40px;display:flex;gap:24px;flex-wrap:wrap;font-size:15px;color:var(--steel)}
+  .elsewhere a{border-bottom:1px solid var(--rule);padding-bottom:2px;transition:color .18s,border-color .18s}
+  .elsewhere a:hover{color:var(--paper);border-color:var(--signal)}
+
+  footer{
+    padding:26px 0 40px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;color:var(--steel-dim);
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
 </head>
 <body>
 
-<header class="nav" id="top">
-  <nav class="nav-inner">
-    <a href="#top" class="nav-brand">Your Name</a>
-    <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
+<header class="topbar">
+  <div class="wrap">
+    <a class="ident" href="#top">Your Name <span>/ robotics</span></a>
+    <nav class="topnav">
+      <a href="#subsystems">Subsystems</a>
+      <a href="#builds">Builds</a>
+      <a href="#log">Log</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
 </header>
 
-<main>
+<main id="top">
 
-  <!-- HERO -->
-  <section class="hero">
-    <p class="reveal hero-eyebrow">City, Country</p>
-    <h1 class="reveal hero-title">Your Name</h1>
-    <h2 class="reveal hero-role">Software Engineer</h2>
-    <p class="reveal hero-tagline">
-      I build fast, accessible web apps and enjoy turning rough ideas into
-      clean, working products.
-    </p>
-    <div class="reveal hero-cta">
-      <a href="#projects" class="btn btn-primary">See my work</a>
-      <a href="resume.pdf" class="btn btn-ghost">Resume</a>
-    </div>
-    <a href="#about" class="reveal hero-scroll">↓ Scroll down</a>
-  </section>
-
-  <!-- ABOUT -->
-  <section id="about" class="section">
-    <h3 class="reveal section-label">About</h3>
-    <p class="reveal section-text">
-      A couple of short paragraphs about who you are, what you're into, and
-      what kind of problems you like solving. Keep it personal and specific —
-      mention the tools you reach for, a project you're proud of, or what got
-      you into this field in the first place.
-    </p>
-  </section>
-
-  <!-- SKILLS -->
-  <section id="skills" class="section">
-    <h3 class="reveal section-label">Skills</h3>
-    <div class="reveal tag-list">
-      <span class="tag">TypeScript</span>
-      <span class="tag">React</span>
-      <span class="tag">Next.js</span>
-      <span class="tag">Node.js</span>
-      <span class="tag">Python</span>
-      <span class="tag">PostgreSQL</span>
-      <span class="tag">Tailwind CSS</span>
-      <span class="tag">Docker</span>
-      <span class="tag">Git</span>
-    </div>
-  </section>
-
-  <!-- PROJECTS -->
-  <section id="projects" class="section">
-    <h3 class="reveal section-label">Projects</h3>
-    <div class="project-grid">
-
-      <article class="reveal project-card">
-        <div class="project-head">
-          <h4>Project One</h4>
-          <div class="project-links">
-            <a href="https://github.com/yourhandle/project-one" target="_blank" rel="noreferrer" aria-label="Repository">⌥</a>
-            <a href="https://example.com" target="_blank" rel="noreferrer" aria-label="Live site">↗</a>
-          </div>
+  <!-- ============ HERO: live scan ============ -->
+  <div class="scanstage">
+    <canvas id="scan" aria-hidden="true"></canvas>
+    <div class="scrim" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="herotext">
+        <h1>Your Name</h1>
+        <p class="role">Robotics &amp; AI engineering student</p>
+        <p class="blurb">
+          I build autonomous ground robots — perception, state estimation and
+          motion planning on ROS 2. Currently looking for an internship or
+          thesis project in Germany.
+        </p>
+        <div class="actions">
+          <a class="btn btn-key" href="#builds">See the builds</a>
+          <a class="btn btn-line" href="resume.pdf">Resume</a>
         </div>
-        <p>One or two sentences on what this project does, who it's for, and the interesting problem it solves.</p>
-        <div class="tag-list small">
-          <span class="tag">Next.js</span>
-          <span class="tag">TypeScript</span>
-          <span class="tag">Postgres</span>
-        </div>
-      </article>
-
-      <article class="reveal project-card">
-        <div class="project-head">
-          <h4>Project Two</h4>
-          <div class="project-links">
-            <a href="https://github.com/yourhandle/project-two" target="_blank" rel="noreferrer" aria-label="Repository">⌥</a>
-          </div>
-        </div>
-        <p>Same idea — what it is, why it's worth a look, and any result or metric worth bragging about.</p>
-        <div class="tag-list small">
-          <span class="tag">React</span>
-          <span class="tag">Tailwind</span>
-        </div>
-      </article>
-
-      <article class="reveal project-card">
-        <div class="project-head">
-          <h4>Project Three</h4>
-          <div class="project-links">
-            <a href="https://example.com" target="_blank" rel="noreferrer" aria-label="Live site">↗</a>
-          </div>
-        </div>
-        <p>A third project card. Three to five is usually the sweet spot for a portfolio — quality over quantity.</p>
-        <div class="tag-list small">
-          <span class="tag">Python</span>
-          <span class="tag">FastAPI</span>
-        </div>
-      </article>
-
-    </div>
-  </section>
-
-  <!-- EXPERIENCE -->
-  <section id="experience" class="section">
-    <h3 class="reveal section-label">Experience</h3>
-    <div class="timeline">
-      <div class="reveal timeline-item">
-        <div class="timeline-main">
-          <p class="timeline-role">Role Title</p>
-          <p class="timeline-org">Company / School</p>
-          <p class="timeline-desc">One line on what you did or are doing there.</p>
-        </div>
-        <p class="timeline-period">2024 — Present</p>
+        <p class="caption">
+          Behind this text is a simulated laser scanner — the sensor a robot
+          uses to feel out a room it has never been in. Each speck is a spot
+          where the beam struck a wall.
+        </p>
       </div>
-      <div class="reveal timeline-item">
-        <div class="timeline-main">
-          <p class="timeline-role">Earlier Role</p>
-          <p class="timeline-org">Company / School</p>
-          <p class="timeline-desc">One line on what you did there.</p>
+    </div>
+    <div class="readout" aria-hidden="true">
+      <div class="key"><i class="k-sensor"></i>the sensor</div>
+      <div class="key"><i class="k-hit"></i>where its beam hit a wall</div>
+      <div class="dist">nearest wall <b id="r-range">0.00</b> m</div>
+      <div class="hint">move your cursor to move the sensor</div>
+    </div>
+  </div>
+
+  <!-- ============ SUBSYSTEMS ============ -->
+  <section id="subsystems" class="pad">
+    <div class="wrap">
+      <h2>What I work on</h2>
+      <p class="lede">
+        Most of my time goes to the three layers that have to agree with each
+        other before a robot moves anywhere useful.
+      </p>
+      <div style="margin-top:38px">
+
+        <div class="sub">
+          <div>
+            <h3>Perception</h3>
+            <p>Making sense of noisy sensors</p>
+          </div>
+          <div class="chips">
+            <span class="chip">ROS 2</span>
+            <span class="chip">OpenCV</span>
+            <span class="chip">PCL</span>
+            <span class="chip">YOLOv8</span>
+            <span class="chip">RealSense</span>
+            <span class="chip">sensor fusion</span>
+          </div>
         </div>
-        <p class="timeline-period">2022 — 2024</p>
+
+        <div class="sub">
+          <div>
+            <h3>Navigation</h3>
+            <p>Knowing where it is, deciding where to go</p>
+          </div>
+          <div class="chips">
+            <span class="chip">SLAM Toolbox</span>
+            <span class="chip">Nav2</span>
+            <span class="chip">EKF</span>
+            <span class="chip">A* / RRT*</span>
+            <span class="chip">costmaps</span>
+          </div>
+        </div>
+
+        <div class="sub">
+          <div>
+            <h3>Control &amp; embedded</h3>
+            <p>Getting the plan into the motors</p>
+          </div>
+          <div class="chips">
+            <span class="chip">C++17</span>
+            <span class="chip">Python</span>
+            <span class="chip">PID / MPC</span>
+            <span class="chip">STM32</span>
+            <span class="chip">CAN</span>
+            <span class="chip">Gazebo</span>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
 
-  <!-- CONTACT -->
-  <section id="contact" class="section contact-section">
-    <h3 class="reveal section-label">Contact</h3>
-    <p class="reveal section-text">
-      Open to new opportunities and interesting projects — feel free to reach out.
-    </p>
-    <a href="mailto:you@example.com" class="reveal btn btn-primary">✉ you@example.com</a>
-    <div class="reveal social-list">
-      <a href="https://github.com/yourhandle" target="_blank" rel="noreferrer">GitHub</a>
-      <a href="https://linkedin.com/in/yourhandle" target="_blank" rel="noreferrer">LinkedIn</a>
-      <a href="https://x.com/yourhandle" target="_blank" rel="noreferrer">X</a>
+  <!-- ============ BUILDS ============ -->
+  <section id="builds" class="pad">
+    <div class="wrap">
+      <h2>Builds</h2>
+      <div class="builds">
+
+        <article class="build feature">
+          <div>
+            <h3>Autonomous warehouse AMR</h3>
+            <p>
+              A differential-drive robot that maps an unseen floor, then runs
+              pick-up routes on its own. The hard part was not the planner —
+              it was keeping localisation stable when the aisles look
+              identical. Adding wheel-odometry fusion and a loop-closure
+              filter cut lost-pose events from roughly one per run to none
+              across twenty runs.
+            </p>
+            <div class="chips">
+              <span class="chip">ROS 2 Humble</span>
+              <span class="chip">SLAM Toolbox</span>
+              <span class="chip">Nav2</span>
+              <span class="chip">C++</span>
+            </div>
+            <div class="buildmeta">
+              <span>platform <i>custom diff-drive</i></span>
+              <span>sensors <i>2D LIDAR + IMU</i></span>
+              <span>role <i>solo</i></span>
+            </div>
+            <div class="links">
+              <a href="#">Repository</a>
+              <a href="#">Demo video</a>
+            </div>
+          </div>
+          <div class="viewport">add a demo GIF here</div>
+        </article>
+
+        <article class="build">
+          <h3>Vision-guided 6-DOF arm</h3>
+          <p>
+            Pick-and-place with pose estimation from a single RGB-D camera.
+            Hand-eye calibration got grasp success from 54% to 89% on
+            cluttered trays.
+          </p>
+          <div class="chips">
+            <span class="chip">MoveIt 2</span>
+            <span class="chip">RealSense</span>
+            <span class="chip">Python</span>
+          </div>
+          <div class="links"><a href="#">Repository</a></div>
+        </article>
+
+        <article class="build">
+          <h3>Sim-to-real line follower</h3>
+          <p>
+            Trained a small CNN controller in Gazebo and moved it onto
+            hardware with domain randomisation. Survived lighting it had
+            never seen.
+          </p>
+          <div class="chips">
+            <span class="chip">Gazebo</span>
+            <span class="chip">PyTorch</span>
+            <span class="chip">STM32</span>
+          </div>
+          <div class="links"><a href="#">Repository</a></div>
+        </article>
+
+        <article class="build">
+          <h3>Teleop with haptic feedback</h3>
+          <p>
+            Force-feedback joystick driving a simulated manipulator over a
+            lossy link, with a predictor to hide 120 ms of latency.
+          </p>
+          <div class="chips">
+            <span class="chip">ROS 2</span>
+            <span class="chip">C++</span>
+            <span class="chip">WebSocket</span>
+          </div>
+          <div class="links"><a href="#">Repository</a></div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LOG ============ -->
+  <section id="log" class="pad">
+    <div class="wrap">
+      <h2>Background</h2>
+      <div class="log">
+        <div class="entry">
+          <time>2024 — present</time>
+          <div>
+            <h3>M.Sc. Robotics &amp; Autonomous Systems</h3>
+            <p class="org">Your University</p>
+            <p>Focus on state estimation, planning under uncertainty and embedded control. Thesis in progress.</p>
+          </div>
+        </div>
+        <div class="entry">
+          <time>Summer 2025</time>
+          <div>
+            <h3>Robotics intern</h3>
+            <p class="org">Company Name</p>
+            <p>Built the ROS 2 bring-up and sensor-calibration tooling for an indoor AMR prototype.</p>
+          </div>
+        </div>
+        <div class="entry">
+          <time>2020 — 2024</time>
+          <div>
+            <h3>B.E. Mechanical Engineering</h3>
+            <p class="org">Your University</p>
+            <p>Team lead on the university robotics team; two national competition finals.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact" class="contact">
+    <div class="wrap">
+      <h2>Open to internships and thesis projects</h2>
+      <p class="lede">
+        Available from March 2027, based in Germany, happy to relocate.
+        The fastest way to reach me is email.
+      </p>
+      <a class="mail" href="mailto:you@example.com">you@example.com</a>
+      <div class="elsewhere">
+        <a href="#">GitHub</a>
+        <a href="#">LinkedIn</a>
+        <a href="resume.pdf">Resume (PDF)</a>
+      </div>
     </div>
   </section>
 
 </main>
 
-<footer class="footer">
-  <p>© 2026 Your Name. Built with plain HTML, CSS &amp; JS.</p>
+<footer>
+  <div class="wrap">Built with plain HTML and CSS. Hosted on GitHub Pages.</div>
 </footer>
 
-<script src="assets/script.js"></script>
+<script>
+(function(){
+  var canvas = document.getElementById('scan');
+  if(!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Floor plan the virtual scanner sees: closed outer room + a few obstacles.
+  var segs = [];
+  function seg(x1,y1,x2,y2){ segs.push({x1:x1,y1:y1,x2:x2,y2:y2}); }
+  function box(x,y,w,h){ seg(x,y,x+w,y); seg(x+w,y,x+w,y+h); seg(x+w,y+h,x,y+h); seg(x,y+h,x,y); }
+
+  // coordinates are in a 0..100 design space, mapped to canvas on resize
+  var obstacles = [
+    {x:18,y:20,w:16,h:13},
+    {x:52,y:16,w:22,h:9},
+    {x:66,y:44,w:14,h:26},
+    {x:20,y:58,w:13,h:22}
+  ];
+  box(4,6,92,88);
+  obstacles.forEach(function(o){ box(o.x,o.y,o.w,o.h); });
+  seg(40,40,46,52); seg(46,52,38,60);
+
+  // shortest distance from a point to a wall segment
+  function distToSeg(px,py,s){
+    var ex = s.x2-s.x1, ey = s.y2-s.y1;
+    var len2 = ex*ex + ey*ey;
+    var t = len2 ? ((px-s.x1)*ex + (py-s.y1)*ey) / len2 : 0;
+    t = t < 0 ? 0 : (t > 1 ? 1 : t);
+    var cx = s.x1 + t*ex, cy = s.y1 + t*ey;
+    return Math.sqrt((px-cx)*(px-cx) + (py-cy)*(py-cy));
+  }
+
+  // The scanner keeps the same clearance from every surface, so hugging any
+  // wall reads the same distance wherever you do it.
+  var MIN_CLEAR = 3;                     // 3 units = 0.30 m
+
+  function placeable(x,y){
+    if(x <= 4 || x >= 96 || y <= 6 || y >= 94) return false;   // outside the room
+    for(var i=0;i<obstacles.length;i++){                        // inside a solid
+      var o = obstacles[i];
+      if(x > o.x && x < o.x+o.w && y > o.y && y < o.y+o.h) return false;
+    }
+    for(var j=0;j<segs.length;j++){                             // too close to a wall
+      if(distToSeg(x,y,segs[j]) < MIN_CLEAR) return false;
+    }
+    return true;
+  }
+
+  var W=0,H=0,sx=1,sy=1,dpr=1;
+  var origin = {x:46,y:46};
+  var theta = 0;
+  var hits = [];          // ring buffer of recent returns
+  var MAX_HITS = 760;
+
+  // 1 design unit = 10 cm, so the room is roughly 9.2 m by 8.8 m
+  var UNIT_M = 0.1;
+  // nearest wall is the smallest return across one whole revolution, not the
+  // distance of whichever ray was cast last — that one swings wildly as the
+  // beam sweeps and tells the visitor nothing.
+  var revMin = Infinity, nearest = 0;
+
+  function resize(){
+    dpr = Math.min(window.devicePixelRatio||1, 2);
+    var r = canvas.getBoundingClientRect();
+    W = r.width; H = r.height;
+    canvas.width = Math.round(W*dpr);
+    canvas.height = Math.round(H*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    // fit the 100x100 room, biased right so it sits beside the hero text
+    var scale = Math.min((W*0.52)/100, (H*0.86)/100);
+    sx = scale; sy = scale;
+    offX = W - 100*scale - Math.min(80, W*0.05);
+    offY = (H - 100*scale)/2;
+  }
+  var offX=0, offY=0;
+  function px(x){ return offX + x*sx; }
+  function py(y){ return offY + y*sy; }
+
+  // ray/segment intersection, returns distance in design units or Infinity
+  function cast(ox,oy,dx,dy){
+    var best = Infinity;
+    for(var i=0;i<segs.length;i++){
+      var s = segs[i];
+      var ex = s.x2-s.x1, ey = s.y2-s.y1;
+      var den = dx*ey - dy*ex;
+      if(Math.abs(den) < 1e-9) continue;
+      var t = ((s.x1-ox)*ey - (s.y1-oy)*ex) / den;
+      var u = ((s.x1-ox)*dy - (s.y1-oy)*dx) / den;
+      if(t > 0.01 && u >= 0 && u <= 1 && t < best) best = t;
+    }
+    return best;
+  }
+
+  function sample(ang){
+    var dx = Math.cos(ang), dy = Math.sin(ang);
+    var d = cast(origin.x, origin.y, dx, dy);
+    if(d === Infinity) return null;
+    var jitter = 1 + (Math.random()-0.5)*0.012;   // sensor noise
+    d *= jitter;
+    return {x:origin.x+dx*d, y:origin.y+dy*d, d:d, a:ang, life:1};
+  }
+
+  function drawGrid(){
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(134,150,171,0.07)';
+    ctx.beginPath();
+    for(var g=0; g<=100; g+=10){
+      ctx.moveTo(px(g), py(0)); ctx.lineTo(px(g), py(100));
+      ctx.moveTo(px(0), py(g)); ctx.lineTo(px(100), py(g));
+    }
+    ctx.stroke();
+  }
+
+  function drawFrame(){
+    ctx.clearRect(0,0,W,H);
+    drawGrid();
+
+    // accumulated returns
+    for(var i=0;i<hits.length;i++){
+      var h = hits[i];
+      var a = h.life;
+      if(a <= 0) continue;
+      ctx.fillStyle = 'rgba(57,208,216,' + (0.14 + a*0.72).toFixed(3) + ')';
+      var s = 1.3 + a*1.5;
+      ctx.fillRect(px(h.x)-s/2, py(h.y)-s/2, s, s);
+    }
+
+    // sweep line, stopped at whatever it just hit
+    if(!reduce){
+      var reach = cast(origin.x, origin.y, Math.cos(theta), Math.sin(theta));
+      if(reach === Infinity) reach = 70;
+      var gx = px(origin.x + Math.cos(theta)*reach);
+      var gy = py(origin.y + Math.sin(theta)*reach);
+      var grad = ctx.createLinearGradient(px(origin.x),py(origin.y),gx,gy);
+      grad.addColorStop(0,'rgba(57,208,216,0.42)');
+      grad.addColorStop(1,'rgba(57,208,216,0)');
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(px(origin.x),py(origin.y));
+      ctx.lineTo(gx,gy);
+      ctx.stroke();
+    }
+
+    // sensor origin
+    ctx.fillStyle = 'rgba(255,179,71,0.95)';
+    ctx.beginPath();
+    ctx.arc(px(origin.x),py(origin.y),3.4,0,Math.PI*2);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,179,71,0.3)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(px(origin.x),py(origin.y),9,0,Math.PI*2);
+    ctx.stroke();
+  }
+
+  function step(){
+    // ~7 rays per frame gives a readable sweep at 60fps
+    for(var k=0;k<7;k++){
+      theta += 0.028;
+      if(theta >= Math.PI*2){           // a full turn finished
+        theta -= Math.PI*2;
+        nearest = (revMin === Infinity) ? 0 : revMin;
+        revMin = Infinity;
+        paintReadout();
+      }
+      var h = sample(theta);
+      if(h){
+        hits.push(h);
+        if(h.d < revMin) revMin = h.d;
+        if(hits.length > MAX_HITS) hits.shift();
+      }
+    }
+    for(var i=0;i<hits.length;i++) hits[i].life -= 0.0022;
+    drawFrame();
+    requestAnimationFrame(step);
+  }
+
+  // one complete revolution, drawn in a single pass
+  function staticScan(){
+    hits = [];
+    var min = Infinity;
+    for(var a=0; a<Math.PI*2; a+=0.012){
+      var h = sample(a);
+      if(h){ h.life = 0.85; hits.push(h); if(h.d < min) min = h.d; }
+    }
+    nearest = (min === Infinity) ? 0 : min;
+    drawFrame();
+    paintReadout();
+  }
+
+  var elRange = document.getElementById('r-range');
+
+  function paintReadout(){
+    if(elRange) elRange.textContent = (nearest*UNIT_M).toFixed(2);
+  }
+
+  // ---- interaction: move the scanner, see what it can see from there ----
+  var stage = document.querySelector('.scanstage');
+
+  function moveScanner(clientX, clientY){
+    var r = canvas.getBoundingClientRect();
+    var dx = (clientX - r.left - offX) / sx;
+    var dy = (clientY - r.top  - offY) / sy;
+    if(!placeable(dx,dy)) return;
+    origin.x = dx; origin.y = dy;
+    if(reduce){
+      staticScan();            // user-initiated redraw, no looping animation
+    } else {
+      hits = [];               // old returns belong to the old vantage point
+    }
+  }
+
+  if(stage){
+    stage.addEventListener('pointermove', function(e){
+      if(e.pointerType === 'touch') return;
+      moveScanner(e.clientX, e.clientY);
+    });
+    stage.addEventListener('pointerdown', function(e){
+      moveScanner(e.clientX, e.clientY);
+    });
+    stage.addEventListener('touchmove', function(e){
+      var t = e.touches[0];
+      if(t) moveScanner(t.clientX, t.clientY);
+    }, {passive:true});
+  }
+
+  window.addEventListener('resize', function(){
+    resize();
+    if(reduce) staticScan();
+  });
+
+  resize();
+  if(reduce){
+    staticScan();
+  } else {
+    requestAnimationFrame(step);   // the readout repaints once per revolution
+  }
+})();
+</script>
 </body>
 </html>
